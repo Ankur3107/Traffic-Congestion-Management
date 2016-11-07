@@ -1,0 +1,47 @@
+tData <- read.csv("data.txt")
+names(tData) <- c("timeStamp","count")
+
+
+Date <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%d")
+Month <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%m")
+Year <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%Y")
+
+
+# for Test
+
+t<- as.Date( tData$timeStamp, '%m/%d/%Y')
+tData$t <- t
+require(ggplot2)
+ggplot( data = tData, aes( t, count)) + geom_point() 
+
+##########
+
+# Shashank Code 
+
+train=read.csv("data.txt",header = F)
+
+new <- do.call( rbind , strsplit( as.character( train$V1 ) , " " ) )
+
+train=cbind( train , Time = new[,2] , Date = new[,1] )
+
+train$Date=as.Date(train$Date,"%m/%d/%Y")
+df <- data.frame(date = train$Date,
+                 year = as.numeric(format(train$Date, format = "%Y")),
+                 month = as.numeric(format(train$Date, format = "%m")),
+                 day = as.numeric(format(train$Date, format = "%d")))
+
+df$date<-NULL
+df$Time=train$Time
+df$Total_Vehicle=train$V2
+
+#######################
+
+## Continue with shashank code
+
+allData <- df
+
+t <- paste(train$Date,train$Time,sep = " ")
+
+ggplot( data = subset(allData,month==4), aes( Time, Total_Vehicle)) + geom_line() 
+
+
