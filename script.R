@@ -44,4 +44,20 @@ t <- paste(train$Date,train$Time,sep = " ")
 
 ggplot( data = subset(allData,month==4), aes( Time, Total_Vehicle)) + geom_line() 
 
+# Date : 09-11-2016
+
+train$DT <- paste(train$Date,train$Time,sep = " ")
+
+tsData <- data.frame(train$DT,train$V2)
+
+names(tsData) <- c("datetime","count")
+
+hist(tsData$count)
+
+a <- tsData[1:1500,]
+a$datetime <- as.character(a$datetime)
+a$datetime <- as.factor(a$datetime)
+plot(a$datetime,a$count)
+
+ggplot(a,aes(x=datetime,y=count)) + geom_line()
 
