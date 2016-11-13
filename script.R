@@ -59,5 +59,5 @@ a$datetime <- as.character(a$datetime)
 a$datetime <- as.factor(a$datetime)
 plot(a$datetime,a$count)
 
-ggplot(a,aes(x=datetime,y=count)) + geom_line()
+ggplot(a,aes(x=datetime,y=count)) + geom_point()
 
