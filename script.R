@@ -59,5 +59,34 @@ a$datetime <- as.character(a$datetime)
 a$datetime <- as.factor(a$datetime)
 plot(a$datetime,a$count)
 
-ggplot(a,aes(x=datetime,y=count)) + geom_point()
+ggplot(a,aes(x=datetime,y=count)) + geom_line()
+
+#####Continue with shashank code#########
+
+library(ggplot2)
+
+qplot(x=Total_Vehicle,data = df)
+
+
+ggplot(data = df,aes(x=Total_Vehicle))+
+  geom_bar()+
+  scale_x_discrete(breaks = 1:100)
+  
+
+ggplot(data = df,aes(x=Total_Vehicle))+
+  geom_bar()+
+  scale_x_discrete(breaks = 1:100)+
+  facet_wrap(~month,ncol = 3)
+
+
+ggplot(df,aes(Time,Total_Vehicle)) + geom_point()
+
+oneMonth <- subset(df,df$month==4)
+
+ggplot(oneMonth,aes(Time,Total_Vehicle)) + geom_point()
+
+ggplot(oneMonth[oneMonth$day==20,],aes(Time,Total_Vehicle)) + geom_jitter()
+
+ggplot(oneMonth,aes(Time,Total_Vehicle)) + geom_point() + facet_wrap(~day,ncol = 3)
+
 
