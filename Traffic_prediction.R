@@ -54,8 +54,68 @@ plot(decompose(t))
 library(forecast)
 fit <- auto.arima(t)
 
-pred <- predict(fit,n.ahead = 288*30)
+pred <- predict(fit,n.ahead = 288)
 
 plot(t)
 
 lines(pred$pred,col="red")
+
+## Code : 19-01-17 ##
+
+# I taken data for 10 days only.
+
+t.decom <- decompose(t, type = "multi")
+
+trend <- t.decom$trend
+seasonal <- t.decom$seasonal
+
+ts.plot(cbind(trend,trend*seasonal), lty=1:2)
+
+par(mfrow=c(1,2))
+acf(t)
+pacf(t)
+
+t1 <- diff(t)
+
+par(mfrow=c(1,2))
+acf(t1)
+pacf(t1)
+
+fit <- arima(t,order = c(2,0,6))
+fit
+
+
+pred <- predict(fit,n.ahead = 288)
+
+plot(t)
+
+lines(pred$pred,col="red")
+
+
+#Now take whole data
+
+tdata <- data.frame(time=paste(train$Date,train$Time,sep=" "),count = train$V2)
+
+t <- ts(tdata$count,frequency = 288)
+
+plot(t)
+
+plot(decompose(t))
+
+acf(t)
+pacf(t)
+
+
+fit <- arima(t,order = c(2,0,6))
+fit
+
+
+pred <- predict(fit,n.ahead = 288*20)
+
+plot(t)
+
+lines(pred$pred,col="red")
+
+
+
+
