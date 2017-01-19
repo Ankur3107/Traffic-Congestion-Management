@@ -106,7 +106,8 @@ acf(t)
 pacf(t)
 
 
-fit <- arima(t,order = c(2,0,6))
+#fit <- arima(t,order = c(2,0,6))
+fit <- arima(t,order = c(0,0,0),seasonal=list(order=c(2,0,6), period=24))
 fit
 
 
@@ -117,5 +118,16 @@ plot(t)
 lines(pred$pred,col="red")
 
 
+# Make some modification like.. taking log,sqrt etc
 
+t <- ts(tdata$count,frequency = 288)
+
+log10_t <- log10(t+2)
+
+plot(log10_t)
+
+plot(decompose(log10_t))
+
+acf(log10_t)
+pacf(log10_t)
 
