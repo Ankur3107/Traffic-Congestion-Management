@@ -1,6 +1,6 @@
 setwd("/Users/Ankur/Desktop/Traffic Project/")
 
-train=read.csv("traffic_data.txt",header = F)
+train=read.csv("test.txt",header = F)
 
 new <- do.call( rbind , strsplit( as.character( train$V1 ) , " " ) )
 
@@ -102,21 +102,27 @@ plot(t)
 
 plot(decompose(t))
 
-acf(t)
-pacf(t)
+acf(t,lag.max = 288)
+pacf(t,lag.max = 288)
 
 
-#fit <- arima(t,order = c(2,0,6))
-fit <- arima(t,order = c(0,0,0),seasonal=list(order=c(2,0,6), period=24))
+fit <- arima(t,order = c(2,0,6))
 fit
 
 
-pred <- predict(fit,n.ahead = 288*20)
+pred <- predict(fit,n.ahead = 288*5)
 
 plot(t)
 
 lines(pred$pred,col="red")
+  
+#########
+#for testing
 
+fcast <- forecast(t, h=288*5)
+plot(fcast)
+
+#########
 
 # Make some modification like.. taking log,sqrt etc
 
