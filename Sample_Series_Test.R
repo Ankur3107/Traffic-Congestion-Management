@@ -22,9 +22,9 @@ colnames(xreg) <- c('Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov',
 
 library(forecast)
 
-model <- Arima(usage, order=c(0,0,0), seasonal=list(order=c(1,0,0), period=24), xreg=xreg)
+model1 <- Arima(usage, order=c(0,0,0), seasonal=list(order=c(1,0,0), period=24), xreg=xreg)
 plot(usage)
-lines(fitted(model),col=2)
+lines(fitted(model1),col=2)
 
 #Benchmark against other models
 model2 <- tslm(usage~as.factor(month)+as.factor(hour))
