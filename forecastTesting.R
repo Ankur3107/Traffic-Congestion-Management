@@ -15,7 +15,7 @@ test_start <- time(birthstimeseries)[train_length+1]
 training <- window(birthstimeseries, end = train_end)
 testing <- window(birthstimeseries, start = test_start)
 
-## Use default forecast
+## forecast
 fcast <- forecast(training, h=test_length)
 plot(fcast)
 lines(testing, col='red')
