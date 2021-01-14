@@ -1,92 +1,35 @@
-tData <- read.csv("data.txt")
-names(tData) <- c("timeStamp","count")
+a40 <- read.csv("a40.csv")
+a49 <- read.csv("a49.csv")
 
+a40$Flow <- round(a40$Flow)
+a49$Flow <- round(a49$Flow)
 
-Date <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%d")
-Month <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%m")
-Year <- format(as.Date(tData$timeStamp,format="%m/%d/%Y"), "%Y")
+str(a40)
 
+a40$LinkDescription <- NULL
+a40$AverageJT <- NULL
+a40$DataQuality <- NULL
+a40$LinkLength <- NULL
 
-# for Test
+a49$LinkDescription <- NULL
+a49$AverageJT <- NULL
+a49$DataQuality <- NULL
+a49$LinkLength <- NULL
 
-t<- as.Date( tData$timeStamp, '%m/%d/%Y')
-tData$t <- t
-require(ggplot2)
-ggplot( data = tData, aes( t, count)) + geom_point() 
+ts_a40 <- ts(a40$Flow,frequency = 96)
+ts_a49 <- ts(a49$Flow,frequency = 96)
+plot(ts_a40)
 
-##########
+plot(decompose(ts_a40))
 
-# Shashank Code 
+library(forecast)
 
-train=read.csv("data.txt",header = F)
-
-new <- do.call( rbind , strsplit( as.character( train$V1 ) , " " ) )
-
-train=cbind( train , Time = new[,2] , Date = new[,1] )
-
-train$Date=as.Date(train$Date,"%m/%d/%Y")
-df <- data.frame(date = train$Date,
-                 year = as.numeric(format(train$Date, format = "%Y")),
-                 month = as.numeric(format(train$Date, format = "%m")),
-                 day = as.numeric(format(train$Date, format = "%d")))
-
-df$date<-NULL
-df$Time=train$Time
-df$Total_Vehicle=train$V2
-
-#######################
-
-## Continue with shashank code
-
-allData <- df
-
-t <- paste(train$Date,train$Time,sep = " ")
-
-ggplot( data = subset(allData,month==4), aes( Time, Total_Vehicle)) + geom_line() 
-
-# Date : 09-11-2016
-
-train$DT <- paste(train$Date,train$Time,sep = " ")
-
-tsData <- data.frame(train$DT,train$V2)
-
-names(tsData) <- c("datetime","count")
-
-hist(tsData$count)
-
-a <- tsData[1:1500,]
-a$datetime <- as.character(a$datetime)
-a$datetime <- as.factor(a$datetime)
-plot(a$datetime,a$count)
-
-ggplot(a,aes(x=datetime,y=count)) + geom_line()
-
-#####Continue with shashank code#########
-
-library(ggplot2)
-
-qplot(x=Total_Vehicle,data = df)
-
-
-ggplot(data = df,aes(x=Total_Vehicle))+
-  geom_bar()+
-  scale_x_discrete(breaks = 1:100)
+#model1 <- Arima(ts_a40,order=c(24,0,0),seasonal=list(order=c(6,0,0)))
   
-
-ggplot(data = df,aes(x=Total_Vehicle))+
-  geom_bar()+
-  scale_x_discrete(breaks = 1:100)+
-  facet_wrap(~month,ncol = 3)
-
-
-ggplot(df,aes(Time,Total_Vehicle)) + geom_point()
-
-oneMonth <- subset(df,df$month==4)
-
-ggplot(oneMonth,aes(Time,Total_Vehicle)) + geom_point()
-
-ggplot(oneMonth[oneMonth$day==20,],aes(Time,Total_Vehicle)) + geom_jitter()
-
-ggplot(oneMonth,aes(Time,Total_Vehicle)) + geom_point() + facet_wrap(~day,ncol = 3)
-
+fcast <- forecast(ts_a40, h=1*96)
+f <- as.data.frame(fcast)
+fcast_2 <- forecast(ts_a49, h=1*96)
+f_2 <- as.data.frame(fcast_2)
+plot(fcast,xlab="Time",ylab="Vehicle Count",main="Traffic Forecasting",xlim=c(180,201))
+lines(testing, col='red')
 
